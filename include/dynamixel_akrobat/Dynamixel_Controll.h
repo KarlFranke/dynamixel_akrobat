@@ -7,7 +7,7 @@
 #include <geometry_msgs/Twist.h>
 #include <trajectory_msgs/JointTrajectory.h>
 #include <trajectory_msgs/JointTrajectoryPoint.h>
-#include <dynamixel_motor/dynamixel.h>
+
 #include "akrobat/movement.h"
 
 #ifdef __linux__
@@ -26,6 +26,8 @@
 #include <math.h>
 
 #include "dynamixel_sdk/dynamixel_sdk.h"
+#include "dynamixel_akrobat/dynamixel.h"
+#include "akrobat/Joint_position.h"
 
 using namespace std;
 using namespace ros;
@@ -47,13 +49,16 @@ class DynamixelController
   
 
   sensor_msgs::JointState jointState;
-  dynamixel_motor::dynamixel dynamixel_msg;
+  dynamixel_akrobat::dynamixel dynamixel_msg;
 
   // ROS Topic Subscriber
   ros::Subscriber goal_joint_states;
   ros::Subscriber dyn_status;
   ros::Subscriber mov_status;
 
+
+  //ROS Service 
+  ros::ServiceServer joint_service;
 
   string goalNodeName;
 
@@ -97,9 +102,9 @@ class DynamixelController
   bool controler_initialize();
   bool sub_positions();
   bool sub_status();
-  void chatterCallback(const dynamixel_motor::dynamixel & msg);
+  void chatterCallback(const dynamixel_akrobat::dynamixel & msg);
   bool cur_position();
-  void position(const sensor_msgs::JointState::ConstPtr& msg);
+  void set_position(const sensor_msgs::JointState::ConstPtr& msg);
   bool sub_down();
   void torqueoff(const akrobat::movement::ConstPtr& msg);
 };

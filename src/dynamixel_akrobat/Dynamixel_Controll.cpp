@@ -9,7 +9,7 @@
 // Code from Tutorial SDK CPP Sync Write Protocol 1.0
 // URL https://emanual.robotis.com/docs/en/software/dynamixel/dynamixel_sdk/sample_code/cpp_sync_write_protocol_1_0/#cpp-sync-write-protocol-10
 
-#include "dynamixel_motor/Dynamixel_Controll.h"
+#include "dynamixel_aotor/Dynamixel_Controll.h"
 
 // Uses DYNAMIXEL SDK library
 // Controll table: https://emanual.robotis.com/docs/en/dxl/rx/rx-64/#control-table
@@ -94,24 +94,24 @@ bool DynamixelController::controler_initialize()
 	// Open port
 	if (portHandler->openPort())
 	{
-	  	printf("Succeeded to open the port!\n");
+	  	ROS_INFO("Succeeded to open the port!");
 	}
 	else
 	{
-	  	printf("Failed to open the port!\n");
-	  	printf("Press any key to terminate...\n");
+	  	ROS_ERROR("Failed to open the port!");
+	  	ROS_ERROR("Press any key to terminate...");
 	  	return 0;
 	}
 
 	// Set port baudrate
 	if (portHandler->setBaudRate(BAUDRATE))
 	{
-	  	printf("Succeeded to change the baudrate!\n");
+	  	ROS_INFO("Succeeded to change the baudrate!");
 	}
 	else
 	{
-		printf("Failed to change the baudrate!\n");
-	  	printf("Press any key to terminate...\n");
+		ROS_ERROR("Failed to change the baudrate!");
+	  	ROS_ERROR("Press any key to terminate...");
 	  	return 0;
 	}
 
@@ -186,13 +186,13 @@ bool DynamixelController::motor_initialize()
 	dxl_comm_result = move_speed_sync_write.txPacket();
 	if (dxl_comm_result != COMM_SUCCESS)
 	{
-		ROS_ERROR("%s", packetHandler->getTxRxResult(dxl_comm_result));
+		ROS_ERROR("move_speed_sync_write: %s", packetHandler->getTxRxResult(dxl_comm_result));
 	}
 	
 	dxl_comm_result = delay_time_sync_write.txPacket();
 	if (dxl_comm_result != COMM_SUCCESS)
 	{
-		ROS_ERROR("%s", packetHandler->getTxRxResult(dxl_comm_result));
+		ROS_ERROR("delay_time_sync_write: %s", packetHandler->getTxRxResult(dxl_comm_result));
 	}
 	 
 	return true; 
@@ -216,7 +216,7 @@ bool DynamixelController::sub_status()
 */
 
 
-void DynamixelController::chatterCallback(const dynamixel_motor::dynamixel & msg)
+void DynamixelController::chatterCallback(const dynamixel_akrobat::dynamixel & msg)
 {
 
 }
@@ -224,7 +224,7 @@ void DynamixelController::chatterCallback(const dynamixel_motor::dynamixel & msg
 bool DynamixelController::sub_positions()
 {
 	node_handle_.param<std::string>("goalNodeName", goalNodeName, "/goal_joint_states");
-	goal_joint_states = node_handle_.subscribe(goalNodeName,10,&DynamixelController::position,this);
+	goal_joint_states = node_handle_.subscribe(goalNodeName,10,&DynamixelController::set_position,this);
 
 	return true;
 }
@@ -235,14 +235,15 @@ bool DynamixelController::sub_positions()
 * @return void
 */
 
-void DynamixelController::position(const sensor_msgs::JointState::ConstPtr& msg)
+void DynamixelController::set_position(const sensor_msgs::JointState::ConstPtr& msg)
 {
+	
 	// Initialize GroupSyncWrite instance
 	dynamixel::GroupSyncWrite groupSyncWrite(portHandler, packetHandler, ADDR_RX_GOAL_POSITION, LEN_RX_GOAL_POSITION);
 	
 	// reading position from Akrobat and ID from config
 	for (int i = 0; i < msg->name.size(); i++)
-	{
+	{	
 		ID=dynamixel_info_[i].second.id;			//ID aus Config
 		pos_rad = msg->position[i];
 		float pos_end;
@@ -272,15 +273,13 @@ void DynamixelController::position(const sensor_msgs::JointState::ConstPtr& msg)
 	// Clear syncwrite parameter storage
 	groupSyncWrite.clearParam();
 
-	DynamixelController::cur_position();
+	//DynamixelController::cur_position();
+	
 	
 }
 
 bool DynamixelController::cur_position()	
 {
-	
-	
-	
 
 	dynamixel_msg.name.resize(18);
 	dynamixel_msg.position.resize(18);
@@ -299,7 +298,7 @@ bool DynamixelController::cur_position()
 		name = motor[i];
 		node_handle_.getParam("/akrobat_config/"+name+"/ID", id);
 
-		// // Get Dynamixel present position valuestring dyn_name = ;
+		// // Get Dynamixel present position 
 		dxl_read_result = packetHandler->read2ByteTxRx(portHandler, id, ADDR_RX_PRESENT_POSITION, &dxl1_present_position, &dxl_error);
 		if (dxl_read_result != COMM_SUCCESS)
 		{
@@ -385,7 +384,7 @@ int main(int argc, char *argv[])
 	
 	ros::init(argc, argv, "Dynamixel");
 	ros::NodeHandle n;
-	dynamixel_status = n.advertise<dynamixel_motor::dynamixel>("/dynamixel_status", 1);
+	dynamixel_status = n.advertise<dynamixel_akrobat::dynamixel>("/dynamixel_status", 1);
 	DynamixelController dynamixel_controller;
 
 	int publish_frequency = 10;

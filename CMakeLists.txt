@@ -58,11 +58,11 @@ catkin_python_setup()
  )
 
 ## Generate services in the 'srv' folder
-# add_service_files(
-#   FILES
-#   Service1.srv
-#   Service2.srv
-# )
+ #add_service_files(
+ #  FILES
+ #  position.srv
+   
+ #)
 
 ## Generate actions in the 'action' folder
 # add_action_files(
@@ -153,7 +153,7 @@ add_executable(Dynamixel_Controll src/dynamixel_motor/Dynamixel_Controll.cpp)
 ## same as for the library above
 #add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
-#add_dependencies(Dynamixel_Controll)
+add_dependencies(Dynamixel_Controll ${Dynamixel_Controll_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
 # target_link_libraries(${PROJECT_NAME}_node
