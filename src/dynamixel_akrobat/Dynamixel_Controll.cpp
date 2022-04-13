@@ -9,7 +9,7 @@
 // Code from Tutorial SDK CPP Sync Write Protocol 1.0
 // URL https://emanual.robotis.com/docs/en/software/dynamixel/dynamixel_sdk/sample_code/cpp_sync_write_protocol_1_0/#cpp-sync-write-protocol-10
 
-#include "dynamixel_aotor/Dynamixel_Controll.h"
+#include "dynamixel_akrobat/Dynamixel_Controll.h"
 
 // Uses DYNAMIXEL SDK library
 // Controll table: https://emanual.robotis.com/docs/en/dxl/rx/rx-64/#control-table
