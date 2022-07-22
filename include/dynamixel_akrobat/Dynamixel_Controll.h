@@ -108,7 +108,7 @@ class DynamixelController
   bool cur_position();
   void set_position(const sensor_msgs::JointState::ConstPtr& msg);
   bool sub_down();
-  void torqueoff(const akrobat::movement::ConstPtr& msg);
+  void torqueoff(const std_msgs::Bool::ConstPtr& Shutdown);
 };
 
 #endif //DYNAMIXEL_WORKBENCH_CONTROLLERS_H
