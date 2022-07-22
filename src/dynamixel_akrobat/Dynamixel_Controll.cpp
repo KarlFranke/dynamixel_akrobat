@@ -340,7 +340,7 @@ bool DynamixelController::cur_position()
 bool DynamixelController::sub_down()
 {	
 	
-	shutdownAkrobat = node_handle_.subscribe<std_msgs::Bool>("shutdown", 1, &DynamixelController::torqueoff, this);
+	shutdownAkrobat = node_handle_.subscribe<std_msgs::Bool>("/shutdown_dyn", 1, &DynamixelController::torqueoff, this);
 
 	return true;
 }
@@ -350,7 +350,7 @@ void DynamixelController::torqueoff(const std_msgs::Bool::ConstPtr& Shutdown)
 	
 if (Shutdown->data)
 	{	
-		sleep(37);
+		sleep(1);
 		ROS_ERROR("Shutdown");
 		node_handle_.getParam("/akrobat_config/motoren",motor);
 		
