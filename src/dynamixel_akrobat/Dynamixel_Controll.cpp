@@ -340,7 +340,7 @@ bool DynamixelController::cur_position()
 bool DynamixelController::sub_down()
 {	
 	
-	shutdownAkrobat = n.subscribe<std_msgs::Bool>("shutdown", 1, &DynamixelController::torqueoff, this);
+	shutdownAkrobat = node_handle_.subscribe<std_msgs::Bool>("shutdown", 1, &DynamixelController::torqueoff, this);
 
 	return true;
 }
