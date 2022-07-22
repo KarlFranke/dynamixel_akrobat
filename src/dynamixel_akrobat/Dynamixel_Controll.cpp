@@ -350,8 +350,8 @@ void DynamixelController::torqueoff(const std_msgs::Bool::ConstPtr& Shutdown)
 	
 if (Shutdown->data)
 	{	
-		sleep(1);
-		ROS_ERROR("Shutdown");
+		
+		
 		node_handle_.getParam("/akrobat_config/motoren",motor);
 		
 		int i;
