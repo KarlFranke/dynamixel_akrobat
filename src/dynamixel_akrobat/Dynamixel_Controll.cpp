@@ -340,20 +340,22 @@ bool DynamixelController::cur_position()
 bool DynamixelController::sub_down()
 {	
 	
-	mov_status = node_handle_.subscribe("/movements",1,&DynamixelController::torqueoff,this);
+	shutdownAkrobat = n.subscribe<std_msgs::Bool>("shutdown", 1, &DynamixelController::torqueoff, this);
 
 	return true;
 }
 
-void DynamixelController::torqueoff(const akrobat::movement::ConstPtr& msg)
+void DynamixelController::torqueoff(const std_msgs::Bool::ConstPtr& Shutdown)
 {	
 	
-if (msg->macro == "shutdown")
+if (Shutdown->data)
 	{	
+		ros::Duration(37).sleep();
 		ROS_ERROR("Shutdown");
 		node_handle_.getParam("/akrobat_config/motoren",motor);
 		
 		int i;
+
 
 		for (i=0;i<motor.size();i++)
 		{	
@@ -385,6 +387,7 @@ int main(int argc, char *argv[])
 	ros::init(argc, argv, "Dynamixel");
 	ros::NodeHandle n;
 	dynamixel_status = n.advertise<dynamixel_akrobat::dynamixel>("/dynamixel_status", 1);
+	
 	DynamixelController dynamixel_controller;
 
 	int publish_frequency = 10;

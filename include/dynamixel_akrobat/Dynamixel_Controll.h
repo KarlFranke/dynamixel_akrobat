@@ -55,6 +55,7 @@ class DynamixelController
   ros::Subscriber goal_joint_states;
   ros::Subscriber dyn_status;
   ros::Subscriber mov_status;
+  ros::Subscriber shutdownAkrobat;
 
 
   //ROS Service 
