@@ -28,6 +28,7 @@
 #include "dynamixel_sdk/dynamixel_sdk.h"
 #include "dynamixel_akrobat/dynamixel.h"
 #include "akrobat/Joint_position.h"
+#include "std_msgs/Bool.h"
 
 using namespace std;
 using namespace ros;
