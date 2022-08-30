@@ -245,8 +245,6 @@ void DynamixelController::set_position(const sensor_msgs::JointState::ConstPtr& 
 		}	
 	}
 
-	
-	
 	// Catch Error
 	dxl_comm_result = groupSyncWrite.txPacket();
 	if (dxl_comm_result != COMM_SUCCESS)
@@ -257,8 +255,6 @@ void DynamixelController::set_position(const sensor_msgs::JointState::ConstPtr& 
 	groupSyncWrite.clearParam();
 
 	//DynamixelController::cur_position();
-	
-	
 }
 
 bool DynamixelController::cur_position()	
