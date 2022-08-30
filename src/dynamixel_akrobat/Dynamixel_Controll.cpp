@@ -216,11 +216,6 @@ bool DynamixelController::sub_status()
 */
 
 
-void DynamixelController::chatterCallback(const dynamixel_akrobat::dynamixel & msg)
-{
-
-}
-
 bool DynamixelController::sub_positions()
 {
 	node_handle_.param<std::string>("goalNodeName", goalNodeName, "/goal_joint_states");
