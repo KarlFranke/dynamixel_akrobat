@@ -203,18 +203,6 @@ bool DynamixelController::motor_initialize()
 * @return bool
 */
 
-bool DynamixelController::sub_status()
-{
-	dyn_status = node_handle_.subscribe("/dynamixel_status",10,&DynamixelController::chatterCallback,this);
-
-	return true;
-}
-
-/** Subscriber for shutdown from Akrobat
- * 
-* @return bool
-*/
-
 
 bool DynamixelController::sub_positions()
 {
